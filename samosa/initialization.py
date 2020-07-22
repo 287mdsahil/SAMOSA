@@ -1,6 +1,7 @@
 from function import TestFunction
 import numpy as np
 from archive import Archive
+from mutate import mutate
 
 
 def init(args):
@@ -12,7 +13,8 @@ def init(args):
     # Initialize archive
     archive = Archive(args.hard_limit, args.soft_limit, test_function)
 
-    for p in archive.points:
-        print(p.output)
+    #mutate
+    print(archive.points[0].input)
+    mutate(archive.points[0])
+    print(archive.points[0].input)
 
-    archive.show_output_graph()
