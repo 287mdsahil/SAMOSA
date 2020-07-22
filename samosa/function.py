@@ -95,7 +95,7 @@ class TestFunction:
             s = s + input_arr[i]
         g = 1.0 + ((9.0 * s) / (len(input_arr) - 1.0))
         f2 = g * (1.0 - sqrt(f1 / g))
-        return [f1, f2]
+        return np.asarray([f1, f2])
 
     def ZDT2(self, input_arr):
         f1 = input_arr[0]
@@ -104,7 +104,7 @@ class TestFunction:
             s = s + input_arr[i]
         g = 1.0 + ((9.0 * s) / (len(input_arr) - 1.0))
         f2 = g * (1.0 - ((f1 / g) ** 2))
-        return [f1, f2]
+        return np.asarray([f1, f2])
 
     def ZDT3(self, input_arr):
         f1 = input_arr[0]
@@ -113,7 +113,7 @@ class TestFunction:
             s = s + input_arr[i]
         g = 1.0 + ((9.0 * s) / (len(input_arr) - 1.0))
         f2 = g * (1.0 - sqrt(f1 / g) - ((f1 / g) * sin(10.0 * 3.14 * f1)))
-        return [f1, f2]
+        return np.asarray([f1, f2])
 
     def ZDT4(self, input_arr):
         f1 = input_arr[0]
@@ -122,7 +122,7 @@ class TestFunction:
             s = s + ((input_arr[i] ** 2) - (10.0 * cos(4 * 3.14 * input_arr[i])))
         g = 1.0 + (10.0 * (len(input_arr) - 1.0)) + s
         f2 = g * (1.0 - ((f1 / g) ** 2))
-        return [f1, f2]
+        return np.asarray([f1, f2])
 
     def ZDT6(self, input_arr):
         f1 = 1.0 - (exp(-4.0 * input_arr[0]) * ((sin(6.0 * 3.14 * input_arr[0])) ** 6))
@@ -131,7 +131,7 @@ class TestFunction:
             s = s + input_arr[i]
         g = 1.0 + 9.0 * ((s / (len(input_arr) - 1.0)) ** 0.25)
         f2 = 1.0 - ((f1 / g) ** 2)
-        return [f1, f2]
+        return np.asarray([f1, f2])
 
     def DTLZ1(self, input_arr):
         n_var = len(input_arr)
@@ -150,7 +150,7 @@ class TestFunction:
             if i > 1:
                 s = s * (1 - input_arr[self.n_objectives - i])
             out[i - 1] = s
-        return out
+        return np.asarray(out)
 
     def DTLZ2(self, input_arr):
         n_var = len(input_arr)
@@ -168,7 +168,7 @@ class TestFunction:
             if i > 1:
                 s = s * sin(input_arr[self.n_objectives - i] * pi / 2)
             out[i - 1] = s
-        return out
+        return np.asarray(out)
 
     def DTLZ3(self, input_arr):
         n_var = len(input_arr)
@@ -187,7 +187,7 @@ class TestFunction:
             if m > 0:
                 product *= sin(input_arr[i] * pi / 2)
             out[m] = product
-        return out
+        return np.asarray(out)
 
     def DTLZ4(self, input_arr, a=100):
         n_var = len(input_arr)
@@ -205,16 +205,18 @@ class TestFunction:
             if m > 0:
                 product *= sin((input_arr[i] ** a) * pi / 2)
             out[m] = product
-        return out
+        return np.asarray(out)
 
     def SCH1(self, input):
+        input = input[0]
         func1 = input ** 2
         func2 = (input - 2.0) ** 2
         out = [func1, func2]
-        return out
+        return np.asarray(out)
 
     def SCH2(self, input):
         func1 = float()
+        input = input[0]
         if input <= 1:
             func1 = -input
         elif input > 1 and input <= 3:
@@ -225,7 +227,7 @@ class TestFunction:
             func1 = input - 4
         func2 = (input - 5) ** 2
         out = [func1, func2]
-        return out
+        return np.asarray(out)
 
     def IMB1(self, input_arr):
         n_var = len(input_arr)
@@ -251,7 +253,7 @@ class TestFunction:
             g = h
         f1 = (1.0 + g) * input_arr[0]
         f2 = (1.0 + g) * (1 - input_arr[0])
-        return [f1, f2]
+        return np.asarray([f1, f2])
 
     def IMB3(self, input_arr):
         n_var = len(input_arr)
@@ -264,7 +266,7 @@ class TestFunction:
             g = h
         f1 = (1.0 + g) * cos(pi * input_arr[0] * 0.5)
         f2 = (1.0 + g) * sin(pi * input_arr[0] * 0.5)
-        return [f1, f2]
+        return np.asarray([f1, f2])
 
     def IMB4(self, input_arr):
         n_var = len(input_arr)
@@ -278,7 +280,7 @@ class TestFunction:
         f1 = (1.0 + g) * input_arr[0] * input_arr[1]
         f2 = (1.0 + g) * input_arr[0] * (1.0 - input_arr[1])
         f3 = (1.0 + g) * (1.0 - input_arr[0])
-        return [f1, f2, f3]
+        return np.asarray([f1, f2, f3])
 
     def IMB5(self, input_arr):
         n_var = len(input_arr)
@@ -292,7 +294,7 @@ class TestFunction:
         f1 = (1.0 + g) * cos(pi * 0.5 * input_arr[0]) * cos(pi * 0.5 * input_arr[1])
         f2 = (1.0 + g) * cos(pi * 0.5 * input_arr[0]) * sin(pi * 0.5 * input_arr[1])
         f3 = (1.0 + g) * sin(pi * 0.5 * input_arr[0])
-        return [f1, f2, f3]
+        return np.asarray([f1, f2, f3])
 
     def IMB6(self, input_arr):
         n_var = len(input_arr)
@@ -306,7 +308,7 @@ class TestFunction:
         f1 = (1.0 + g) * input_arr[0] * input_arr[1]
         f2 = (1.0 + g) * input_arr[0] * (1.0 - input_arr[1])
         f3 = (1.0 + g) * (1.0 - input_arr[0])
-        return [f1, f2, f3]
+        return np.asarray([f1, f2, f3])
 
     def IMB7(self, input_arr):
         n_var = len(input_arr)
@@ -322,7 +324,7 @@ class TestFunction:
             g = h2
         f1 = (1.0 + g) * input_arr[0]
         f2 = (1.0 + g) * (1 - sqrt(input_arr[0]))
-        return [f1, f2]
+        return np.asarray([f1, f2])
 
     def IMB8(self, input_arr):
         n_var = len(input_arr)
@@ -338,7 +340,7 @@ class TestFunction:
             g = h2
         f1 = (1.0 + g) * input_arr[0]
         f2 = (1.0 + g) * (1 - input_arr[0])
-        return [f1, f2]
+        return np.asarray([f1, f2])
 
     def IMB9(self, input_arr):
         n_var = len(input_arr)
@@ -354,7 +356,7 @@ class TestFunction:
             g = h2
         f1 = (1.0 + g) * cos(pi * 0.5 * input_arr[0])
         f2 = (1.0 + g) * sin(pi * 0.5 * input_arr[0])
-        return [f1, f2]
+        return np.asarray([f1, f2])
 
     def IMB10(self, input_arr):
         n_var = len(input_arr)
@@ -373,4 +375,4 @@ class TestFunction:
         f1 = (1.0 + g) * input_arr[0] * input_arr[1]
         f2 = (1.0 + g) * input_arr[0] * (1.0 - input_arr[1])
         f3 = (1.0 + g) * (1.0 - input_arr[0])
-        return [f1, f2, f3]
+        return np.asarray([f1, f2, f3])
