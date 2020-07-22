@@ -2,17 +2,18 @@ from point import Point
 from math import *
 import numpy as np
 import random
+import copy
 
 
-def laplacian(point, max_input, min_input, b=0.25):
+def laplacian(input, max_input, min_input, b=0.25):
     """Function to perform mutation on individual input vector"""
 
-    i_rand = random.randint(0, point.input.size - 1)
-    y = point.input[i_rand]
+    i_rand = random.randint(0, input.size - 1)
+    y = input[i_rand]
     y = laplacian_mutate(y, b)
     i_count = 0
     while (y < min_input[i_rand] or y > max_input[i_rand]) and i_count < 20:
-        y = point.input[i_rand]
+        y = input[i_rand]
         y = laplacian_mutate(y, b)
         i_count = i_count + 1
 
@@ -22,7 +23,8 @@ def laplacian(point, max_input, min_input, b=0.25):
         y = max_input[i_rand]
 
     # Update input vector element
-    point.input[i_rand] = y
+    input[i_rand] = y
+    return input
 
 
 def laplacian_mutate(y, b):
@@ -44,4 +46,7 @@ def mutate(point, max_input=None, min_input=None):
         max_input = np.ones(point.input.size)
     if min_input == None:
         min_input = np.zeros(point.input.size)
-    laplacian(point, max_input, min_input)
+    input = copy.deepcopy(point.input)
+    laplacian(input, max_input, min_input)
+    new_point = Point(input, point.evaluate)
+    return new_point

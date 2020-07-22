@@ -12,9 +12,3 @@ def init(args):
 
     # Initialize archive
     archive = Archive(args.hard_limit, args.soft_limit, test_function)
-
-    #mutate
-    print(archive.points[0].input)
-    mutate(archive.points[0])
-    print(archive.points[0].input)
-
