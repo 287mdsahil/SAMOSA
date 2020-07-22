@@ -24,13 +24,8 @@ class Archive:
             point = Point(input, self.test_function.eval)
             self.add(point)
 
-        self.show_output_graph()
         self.__hill_climbing(20)
-        self.show_output_graph()
         self.__remove_dominated()
-        self.show_output_graph()
-        for point in self.points:
-            print(point.output)
 
     def size(self):
         return self.points.size
