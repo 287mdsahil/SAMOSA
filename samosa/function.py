@@ -88,6 +88,9 @@ class TestFunction:
             self.n_objectives = 3
             self.n_var = 10
 
+        self.min_var = np.zeros(self.n_var)
+        self.max_var = np.ones(self.n_var)
+
     def ZDT1(self, input_arr):
         f1 = input_arr[0]
         s = 0.0
