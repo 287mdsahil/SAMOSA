@@ -4,6 +4,7 @@ from mpl_toolkits import mplot3d
 
 from point import Point
 from function import TestFunction
+from mutate import mutate
 
 
 class Archive:
@@ -23,11 +24,46 @@ class Archive:
             point = Point(input, self.test_function.eval)
             self.add(point)
 
+        self.show_output_graph()
+        self.__hill_climbing(20)
+        self.show_output_graph()
+        self.__remove_dominated()
+        self.show_output_graph()
+        for point in self.points:
+            print(point.output)
+
     def size(self):
         return self.points.size
 
     def add(self, point):
         self.points = np.append(self.points, [point])
+
+    def remove_value(self, point):
+        p = np.delete(self.points, np.where(self.points == point))
+        self.points = p
+
+    def remove_index(self, i):
+        self.points = np.delete(self.points, i)
+
+    def __hill_climbing(self, n_hill_climb):
+        for point in self.points:
+            for nn in range(n_hill_climb):
+                new_point = mutate(point)
+                d = Point.pareto_dominance(new_point, point)
+                if d > 0:
+                    self.remove_value(point)
+                    self.add(new_point)
+
+    def __remove_dominated(self):
+        dominated_point_indices = []
+        for i in range(self.points.size):
+            for j in range(i + 1, self.points.size):
+                d = Point.pareto_dominance(self.points[i], self.points[j])
+                if d < 0:
+                    dominated_point_indices.append(i)
+                elif d > 0:
+                    dominated_point_indices.append(j)
+        self.remove_index(dominated_point_indices)
 
     def show_output_graph(self):
         if self.test_function.n_objectives == 2:
