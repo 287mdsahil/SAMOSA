@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
+import math
 
 from point import Point
 from function import TestFunction
@@ -55,6 +56,7 @@ class Archive:
                 if d > 0:
                     self.remove_value(point)
                     self.add(new_point)
+                    break
 
     def __remove_dominated(self):
         dominated_point_indices = []
@@ -92,9 +94,40 @@ class Archive:
         plt.show()
 
     def get_ref_point_association_list(self):
-        ref_point_association_list = np.zeros(Point.ref_points.size)
+        ref_point_association_list = []
+
+        for i in range(self.ref_points.size):
+            ref_point_association_list.append([])
+
         for point in self.points:
-            ref_point_association_list[point.sub_space_index] = (
-                ref_point_association_list[point.sub_space_index] + 1
-            )
-        return ref_point_association_list
+            ref_point_association_list[point.sub_space_index].append(point)
+        return np.array(ref_point_association_list)
+
+    def get_random_point(self):
+        return np.random.choice(self.points)
+
+    def resize(self):
+        if self.points.size < self.soft_limit:
+            return
+
+        association_list = self.get_ref_point_association_list()
+
+        while self.points.size > self.hard_limit:
+            # Find subspace with hightest number of points
+            max_index = 0
+            max_assoc = 0
+            for i in range(association_list.size):
+                assoc = len(association_list[i])
+                if assoc > max_assoc:
+                    max_assoc = assoc
+                    max_index = i
+
+            # Find the point in the subspace with max PBI
+            point = association_list[max_index][0]
+            max_PBI = -math.inf
+            for p in association_list[max_index]:
+                if p.PBI > max_PBI:
+                    max_PBI = p.PBI
+                    point = p
+            self.remove_value(point)
+            association_list[max_index].remove(point)

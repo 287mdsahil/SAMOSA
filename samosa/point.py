@@ -27,6 +27,9 @@ class Point:
         self.input = np.asarray(copy.deepcopy(input))
         self.output = Point.evaluate(self.input)
         self.sub_space_index = Point.associate(self.output, Point.ref_points)
+        self.PBI = Point.calculatePBI(
+            self.output, Point.ref_points[self.sub_space_index]
+        )
 
     @staticmethod
     def pareto_dominance(point1, point2):
