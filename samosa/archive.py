@@ -5,6 +5,7 @@ from mpl_toolkits import mplot3d
 from point import Point
 from function import TestFunction
 from mutate import mutate
+from ref_points import getRefPoints
 
 
 class Archive:
@@ -12,6 +13,12 @@ class Archive:
         self.hard_limit = hard_limit
         self.soft_limit = soft_limit
         self.test_function = test_function
+        # Get reference variables
+        self.ref_points, self.ref_points_distance_matrix = getRefPoints(
+            self.test_function.n_objectives
+        )
+        Point.evaluate = self.test_function.eval
+        Point.ref_points = self.ref_points
         self.__initlize_points()
 
     def __initlize_points(self):
@@ -21,7 +28,7 @@ class Archive:
             input = self.test_function.min_var + (
                 self.test_function.max_var - self.test_function.min_var
             ) * np.random.uniform(size=self.test_function.n_var)
-            point = Point(input, self.test_function.eval)
+            point = Point(input)
             self.add(point)
 
         self.__hill_climbing(20)
@@ -83,3 +90,11 @@ class Archive:
         ax = plt.axes(projection="3d")
         ax.scatter3D(z, y, x)
         plt.show()
+
+    def get_ref_point_association_list(self):
+        ref_point_association_list = np.zeros(Point.ref_points.size)
+        for point in self.points:
+            ref_point_association_list[point.sub_space_index] = (
+                ref_point_association_list[point.sub_space_index] + 1
+            )
+        return ref_point_association_list

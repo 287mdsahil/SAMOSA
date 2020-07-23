@@ -9,11 +9,11 @@ def parseArgs():
     parser.add_argument("n_objectives", help="Number of objective functions")
     parser.add_argument("hard_limit", help="Hard limit")
     parser.add_argument("soft_limit", help="Soft limit")
-    parser.add_argument("alpha", help="Alpha value")
+    parser.add_argument("alpha", help="Cooling rate")
 
     parser.add_argument("--n-iter", help="Number of iterations per temperature")
     parser.add_argument("--max-temp", help="Maximum temperature")
-    parser.add_argument("--min-temp" , help="Minimum temperature")
+    parser.add_argument("--min-temp", help="Minimum temperature")
 
     args = parser.parse_args()
 
