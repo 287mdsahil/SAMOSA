@@ -47,22 +47,27 @@ def main():
                 cur_point = random.choice(
                     ref_point_association_list[cur_subspace_index]
                 )
-                subspace_unvisited.remove(cur_subspace_index)
+
+            subspace_unvisited.remove(cur_point.sub_space_index)
+            if(len(subspace_unvisited) == 0):
+                subspace_unvisited = list(range(archive.ref_points.size))
 
             new_point = mutate(cur_point)
-
-            dominance = Point.pareto_dominance(new_point, cur_point)
-
-            if dominance > 0:  # Case 1 cur_point dominates new_point
-                pass
-            elif dominance == 0:  # Case 2 new_point and cur_point non-dominating
-                pass
-            elif dominance < 0:  # Case 3 new_point dominates cur_point
-                pass
-
+            cur_point = amosa_select(archive, cur_point, new_point, temp)
             archive.resize()
-
         temp = temp * args.alpha
+        print(temp)
 
     # Show graph
     archive.show_output_graph()
+
+
+def amosa_select(archive, cur_point, new_point, temp):
+    dominance = Point.pareto_dominance(new_point, cur_point)
+    if dominance > 0:  # Case 1 cur_point dominates new_point
+        pass
+    elif dominance == 0:  # Case 2 new_point and cur_point non-dominating
+        pass
+    elif dominance < 0:  # Case 3 new_point dominates cur_point
+        pass
+    return cur_point
