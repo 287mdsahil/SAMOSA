@@ -4,7 +4,7 @@ import numpy as np
 from archive import Archive
 from mutate import mutate
 import random
-from point import Point
+from amosa import amosa_select
 
 
 def main():
@@ -39,6 +39,9 @@ def main():
                     except ValueError:
                         pass
 
+            if len(subspace_unvisited) == 0:
+                subspace_unvisited = list(range(archive.ref_points.size))
+
             # check if current subspace is visited
             if cur_point.sub_space_index not in subspace_unvisited:
                 # If current subspace is visited
@@ -49,25 +52,12 @@ def main():
                 )
 
             subspace_unvisited.remove(cur_point.sub_space_index)
-            if(len(subspace_unvisited) == 0):
-                subspace_unvisited = list(range(archive.ref_points.size))
 
             new_point = mutate(cur_point)
             cur_point = amosa_select(archive, cur_point, new_point, temp)
             archive.resize()
         temp = temp * args.alpha
-        print(temp)
+        print(temp, archive.points.size)
 
     # Show graph
     archive.show_output_graph()
-
-
-def amosa_select(archive, cur_point, new_point, temp):
-    dominance = Point.pareto_dominance(new_point, cur_point)
-    if dominance > 0:  # Case 1 cur_point dominates new_point
-        pass
-    elif dominance == 0:  # Case 2 new_point and cur_point non-dominating
-        pass
-    elif dominance < 0:  # Case 3 new_point dominates cur_point
-        pass
-    return cur_point

@@ -14,13 +14,26 @@ class Archive:
         self.hard_limit = hard_limit
         self.soft_limit = soft_limit
         self.test_function = test_function
-        # Get reference variables
         self.ref_points, self.ref_points_distance_matrix = getRefPoints(
             self.test_function.n_objectives
         )
         Point.evaluate = self.test_function.eval
         Point.ref_points = self.ref_points
         self.__initlize_points()
+        self.__set_output_range()
+
+    def __set_output_range(self):
+        self.output_range = []
+        for i in range(self.test_function.n_objectives):
+            max = -math.inf
+            min = math.inf
+            for point in self.points:
+                if point.output[i] > max:
+                    max = point.output[i]
+                if point.output[i] < min:
+                    min = point.output[i]
+            self.output_range.append(max - min)
+        self.output_range = np.asarray(self.output_range)
 
     def __initlize_points(self):
         self.points = np.asarray([], dtype=Point)
@@ -131,3 +144,12 @@ class Archive:
                     point = p
             self.remove_value(point)
             association_list[max_index].remove(point)
+
+    def calculate_dom(self, point1, point2):
+        diff = point1.output - point2.output
+        non_zero_diff = np.delete(diff, np.where(diff==0))
+        prod = np.prod(non_zero_diff)
+        prod = math.fabs(prod)
+        dom = prod/np.prod(self.output_range)
+        return dom
+

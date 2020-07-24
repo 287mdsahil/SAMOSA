@@ -2,6 +2,7 @@ import copy
 import numpy as np
 import csv
 
+
 class form_ref_pts(object):
     def __init__(self, m, divisions):
         self.M = m - 1
@@ -56,42 +57,41 @@ class distanceObj(object):
         self.dis = self.distance(points[r], points[c])
 
     def distance(self, refPoint1, refPoint2):
-        if(len(refPoint1) != len(refPoint2)):
+        if len(refPoint1) != len(refPoint2):
             print("Reference point dimension mismatch")
             exit(0)
         distance = 0
         for i in range(len(refPoint1)):
-            distance = distance + (refPoint1[i]-refPoint2[i])**2
-        distance = distance**0.5
+            distance = distance + (refPoint1[i] - refPoint2[i]) ** 2
+        distance = distance ** 0.5
         return distance
 
 
-# Entry point ----------------------------------
 def getRefPoints(n_obj):
-    '''returns generated reference points'''
+    """returns generated reference points"""
     points = []
-    if(n_obj == 2):
-        points = np.genfromtxt('Res2.csv', delimiter=',')
-    elif(n_obj == 3):
-        #points = np.genfromtxt('Res3.csv', delimiter=',')
+    if n_obj == 2:
+        points = np.genfromtxt("Res2.csv", delimiter=",")
+    elif n_obj == 3:
+        # points = np.genfromtxt('Res3.csv', delimiter=',')
         divisions = 12
         refPoints = form_ref_pts(n_obj, divisions)
         points = refPoints.points
-    elif(n_obj == 5):
+    elif n_obj == 5:
         divisions = 6
         refPoints = form_ref_pts(n_obj, divisions)
         points = refPoints.points
-    elif(n_obj == 8):
+    elif n_obj == 8:
         outerDivisions = 3
         innerDivisions = 2
         ref_points = form_refs(n_obj, outerDivisions, innerDivisions)
         points = ref_points
-    elif(n_obj == 10):
+    elif n_obj == 10:
         outerDivisions = 3
         innerDivisions = 2
         ref_points = form_refs(n_obj, outerDivisions, innerDivisions)
         points = ref_points
-    elif(n_obj == 15):
+    elif n_obj == 15:
         outerDivisions = 2
         innerDivisions = 1
         ref_points = form_refs(n_obj, outerDivisions, innerDivisions)
