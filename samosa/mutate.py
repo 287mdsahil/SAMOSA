@@ -5,7 +5,7 @@ import random
 import copy
 
 
-def laplacian(input, max_input, min_input, b=0.25):
+def laplacian(input, max_input, min_input, b=0.5):
     """Function to perform mutation on individual input vector"""
 
     i_rand = random.randint(0, input.size - 1)

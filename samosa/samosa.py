@@ -28,14 +28,14 @@ def main():
 
     temp = args.max_temp
     while temp > args.min_temp:
-        for i in range(n_iter):
+        for iter in range(n_iter):
             ref_point_association_list = archive.get_ref_point_association_list()
 
             # mark empty subspaces as visited
-            for i in range(len(ref_point_association_list)):
-                if len(ref_point_association_list[i]) == 0:
+            for j in range(len(ref_point_association_list)):
+                if len(ref_point_association_list[j]) == 0:
                     try:
-                        subspace_unvisited.remove(i)
+                        subspace_unvisited.remove(j)
                     except ValueError:
                         pass
 
@@ -56,8 +56,16 @@ def main():
             new_point = mutate(cur_point)
             cur_point = amosa_select(archive, cur_point, new_point, temp)
             archive.resize()
+            print(
+                iter,
+                temp,
+                archive.points.size,
+                "Spread:",
+                np.count_nonzero(ref_point_association_list),
+                "\t",
+                end="\r",
+            )
         temp = temp * args.alpha
-        print(temp, archive.points.size)
 
     # Show graph
     archive.show_output_graph()

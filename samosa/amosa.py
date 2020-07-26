@@ -6,7 +6,7 @@ import math
 def amosa_select(archive, cur_point, new_point, temp):
     dominance = Point.pareto_dominance(new_point, cur_point)
     case = 0
-    if dominance > 0:  # Case 1 cur_point dominates new_point
+    if dominance < 0:  # Case 1 cur_point dominates new_point
         case = 1
         deldom = archive.calculate_dom(new_point, cur_point)
         k = 1
@@ -54,18 +54,18 @@ def amosa_select(archive, cur_point, new_point, temp):
             prob = 1.0 / (1.0 + e)
             if random.random() <= prob:
                 cur_point = new_point
-        # Case 3b If new point is non-dominated wrt to all points in the archive
+        # Case 2b If new point is non-dominated wrt to all points in the archive
         elif k2 == archive.points.size:
             archive.add(new_point)
             cur_point = new_point
-        # Case 3c If new point dominates k(k>=1) points in the archive
+        # Case 2c If new point dominates k(k>=1) points in the archive
         elif k3 > 0:
             archive.remove_value(dominated_points)
             archive.add(new_point)
             cur_point = new_point
             pass
 
-    elif dominance < 0:  # Case 3 new_point dominates cur_point
+    elif dominance > 0:  # Case 3 new_point dominates cur_point
         case = 3
         k1 = 0
         k2 = 0
@@ -104,6 +104,5 @@ def amosa_select(archive, cur_point, new_point, temp):
             archive.remove_value(dominated_points)
             archive.add(new_point)
             cur_point = new_point
-            pass
 
     return cur_point
